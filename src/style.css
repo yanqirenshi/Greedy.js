@@ -85,7 +85,7 @@ body {
 /* フォーム表示中は+ボタンをdisabled風に */
 .floating-add-btn.disabled {
   background: #ccc;
-  cursor: not-allowed;
+  cursor: pointer;
   box-shadow: none;
   opacity: 0.6;
 }
@@ -275,6 +275,26 @@ textarea {
 .btn-close:hover {
   background: #f5f5f5;
   color: var(--text-primary);
+}
+
+/* 削除ボタン */
+.btn-delete {
+  width: 100%;
+  padding: 10px;
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 500;
+  color: #EF5350;
+  background: #ffffff;
+  border: 1px solid #EF5350;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-delete:hover {
+  background: #EF5350;
+  color: #ffffff;
 }
 
 /* 追加ボタン disabled状態 */

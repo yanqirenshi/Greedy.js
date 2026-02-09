@@ -24,7 +24,7 @@
     <!-- 登録フォーム（フローティング、初期非表示） -->
     <div id="form-panel" class="hidden">
       <div class="form-header">
-        <h2>物慾を追加</h2>
+        <h2 id="form-title">物慾を追加</h2>
       </div>
       <form id="desire-form">
         <div class="form-group">
@@ -67,6 +67,7 @@
 
         <div class="form-buttons">
           <button type="submit" class="btn-submit">追加</button>
+          <button type="button" id="delete-btn" class="btn-delete" style="display: none;">削除</button>
           <button type="button" id="close-form-btn" class="btn-close">閉じる</button>
         </div>
       </form>

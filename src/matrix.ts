@@ -8,6 +8,7 @@ const MARGIN = { top: 60, right: 40, bottom: 60, left: 80 };
 // コールバック型定義
 type DeleteCallback = (id: string) => void;
 type UpdateCallback = (id: string, x: number, y: number) => void;
+type ClickCallback = (desire: Desire) => void;
 
 // マトリクス描画クラス
 export class MatrixRenderer {
@@ -152,7 +153,8 @@ export class MatrixRenderer {
     public drawDesires(
         desires: Desire[],
         onDelete: DeleteCallback,
-        onUpdate: UpdateCallback
+        onUpdate: UpdateCallback,
+        onClick?: ClickCallback
     ): void {
         this.mainGroup.selectAll('.desire-items').remove();
 
@@ -164,7 +166,7 @@ export class MatrixRenderer {
             const { x, y } = this.calculatePosition(desire, index, desires);
             const quadrant = this.getQuadrantInfo(desire);
 
-            this.drawDesireNode(itemsGroup, desire, x, y, quadrant, onDelete, onUpdate);
+            this.drawDesireNode(itemsGroup, desire, x, y, quadrant, onDelete, onUpdate, onClick);
         });
     }
 
@@ -225,7 +227,8 @@ export class MatrixRenderer {
         y: number,
         quadrant: QuadrantInfo,
         onDelete: DeleteCallback,
-        onUpdate: UpdateCallback
+        onUpdate: UpdateCallback,
+        onClick?: ClickCallback
     ): void {
         const nodeGroup = parent.append('g')
             .attr('class', 'desire-node')
@@ -236,12 +239,28 @@ export class MatrixRenderer {
         const radius = 28;
         const self = this;
 
+        // ドラッグとクリックを区別するための変数
+        let startX = 0;
+        let startY = 0;
+        let isDragging = false;
+        const CLICK_THRESHOLD = 5; // ピクセル
+
         // ドラッグ動作を定義
         const drag = d3.drag<SVGGElement, unknown>()
-            .on('start', function () {
+            .on('start', function (event: d3.D3DragEvent<SVGGElement, unknown, unknown>) {
+                startX = event.x;
+                startY = event.y;
+                isDragging = false;
                 d3.select(this).raise().style('cursor', 'grabbing');
             })
             .on('drag', function (event: d3.D3DragEvent<SVGGElement, unknown, unknown>) {
+                // 移動距離をチェック
+                const dx = Math.abs(event.x - startX);
+                const dy = Math.abs(event.y - startY);
+                if (dx > CLICK_THRESHOLD || dy > CLICK_THRESHOLD) {
+                    isDragging = true;
+                }
+
                 // 新しい位置を計算（境界内に制限）
                 const newX = Math.max(0, Math.min(self.innerWidth, event.x));
                 const newY = Math.max(0, Math.min(self.innerHeight, event.y));
@@ -249,10 +268,18 @@ export class MatrixRenderer {
             })
             .on('end', function (event: d3.D3DragEvent<SVGGElement, unknown, unknown>) {
                 d3.select(this).style('cursor', 'grab');
-                // 位置を相対値（0-1）に変換して保存
-                const relX = Math.max(0, Math.min(1, event.x / self.innerWidth));
-                const relY = Math.max(0, Math.min(1, event.y / self.innerHeight));
-                onUpdate(desire.id, relX, relY);
+
+                if (isDragging) {
+                    // ドラッグ終了 → 位置を保存
+                    const relX = Math.max(0, Math.min(1, event.x / self.innerWidth));
+                    const relY = Math.max(0, Math.min(1, event.y / self.innerHeight));
+                    onUpdate(desire.id, relX, relY);
+                } else {
+                    // クリック → 詳細表示
+                    if (onClick) {
+                        onClick(desire);
+                    }
+                }
             });
 
         // ドラッグを適用
@@ -354,10 +381,11 @@ export class MatrixRenderer {
     public refresh(
         desires: Desire[],
         onDelete: DeleteCallback,
-        onUpdate: UpdateCallback
+        onUpdate: UpdateCallback,
+        onClick?: ClickCallback
     ): void {
         this.resize();
         this.drawGrid();
-        this.drawDesires(desires, onDelete, onUpdate);
+        this.drawDesires(desires, onDelete, onUpdate, onClick);
     }
 }
