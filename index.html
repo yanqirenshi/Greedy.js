@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="物慾を重要度×緊急度のマトリクスで可視化・管理するアプリケーション" />
+  <title>物慾マトリクス</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div id="app">
+    <!-- マトリクス表示エリア -->
+    <div id="matrix-container">
+      <svg id="matrix"></svg>
+    </div>
+
+    <!-- 追加ボタン（フローティング） -->
+    <button id="add-btn" class="floating-add-btn" title="物慾を追加">＋</button>
+
+    <!-- 登録フォーム（フローティング、初期非表示） -->
+    <div id="form-panel" class="hidden">
+      <div class="form-header">
+        <h2>物慾を追加</h2>
+        <button type="button" id="close-form-btn" class="close-btn">×</button>
+      </div>
+      <form id="desire-form">
+        <div class="form-group">
+          <label for="name">名前 <span class="required">*</span></label>
+          <input type="text" id="name" name="name" required placeholder="欲しいものの名前" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="importance">重要度 <span class="required">*</span></label>
+            <select id="importance" name="importance" required>
+              <option value="low">低</option>
+              <option value="high">高</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="urgency">緊急度 <span class="required">*</span></label>
+            <select id="urgency" name="urgency" required>
+              <option value="low">低</option>
+              <option value="high">高</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="imageUrl">画像URL</label>
+          <input type="url" id="imageUrl" name="imageUrl" placeholder="https://example.com/image.jpg" />
+        </div>
+
+        <div class="form-group">
+          <label for="webUrl">WebページURL</label>
+          <input type="url" id="webUrl" name="webUrl" placeholder="https://example.com/product" />
+        </div>
+
+        <div class="form-group">
+          <label for="note">メモ</label>
+          <textarea id="note" name="note" rows="2" placeholder="補足情報など"></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">追加</button>
+      </form>
+    </div>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>
