@@ -56,22 +56,42 @@ function handleFormSubmit(event: Event): void {
 
     // フォームをリセットして閉じる
     form.reset();
+    updateSubmitButton();
     hideForm();
 }
 
 // フォームを表示
 function showForm(): void {
     const formPanel = document.getElementById('form-panel');
+    const addBtn = document.getElementById('add-btn');
     if (formPanel) {
         formPanel.classList.remove('hidden');
+    }
+    // +ボタンをdisabled風に
+    if (addBtn) {
+        addBtn.classList.add('disabled');
     }
 }
 
 // フォームを非表示
 function hideForm(): void {
     const formPanel = document.getElementById('form-panel');
+    const addBtn = document.getElementById('add-btn');
     if (formPanel) {
         formPanel.classList.add('hidden');
+    }
+    // +ボタンを通常状態に戻す
+    if (addBtn) {
+        addBtn.classList.remove('disabled');
+    }
+}
+
+// 追加ボタンの有効/無効を更新
+function updateSubmitButton(): void {
+    const nameInput = document.getElementById('name') as HTMLInputElement;
+    const submitBtn = document.querySelector('.btn-submit') as HTMLButtonElement;
+    if (nameInput && submitBtn) {
+        submitBtn.disabled = !nameInput.value.trim();
     }
 }
 
@@ -89,6 +109,15 @@ function init(): void {
     if (form) {
         form.addEventListener('submit', handleFormSubmit);
     }
+
+    // 名前フィールドの入力監視（追加ボタンの有効/無効）
+    const nameInput = document.getElementById('name');
+    if (nameInput) {
+        nameInput.addEventListener('input', updateSubmitButton);
+    }
+
+    // 初期状態で追加ボタンを無効化
+    updateSubmitButton();
 
     // 追加ボタンのクリックでフォームを表示
     const addBtn = document.getElementById('add-btn');

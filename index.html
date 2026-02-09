@@ -25,7 +25,6 @@
     <div id="form-panel" class="hidden">
       <div class="form-header">
         <h2>物慾を追加</h2>
-        <button type="button" id="close-form-btn" class="close-btn">×</button>
       </div>
       <form id="desire-form">
         <div class="form-group">
@@ -66,7 +65,10 @@
           <textarea id="note" name="note" rows="2" placeholder="補足情報など"></textarea>
         </div>
 
-        <button type="submit" class="btn-submit">追加</button>
+        <div class="form-buttons">
+          <button type="submit" class="btn-submit">追加</button>
+          <button type="button" id="close-form-btn" class="btn-close">閉じる</button>
+        </div>
       </form>
     </div>
   </div>
