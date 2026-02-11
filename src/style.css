@@ -95,6 +95,33 @@ body {
   box-shadow: none;
 }
 
+/* フローティングJSON出力ボタン */
+.floating-export-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 8px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text-secondary);
+  font-family: var(--font-family);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 99;
+  box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.floating-export-btn:hover {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px var(--shadow-color);
+}
+
 /* フォームパネル */
 #form-panel {
   position: fixed;
@@ -112,10 +139,79 @@ body {
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-#form-panel.hidden {
+#form-panel.hidden,
+#display-panel.hidden {
   opacity: 0;
   transform: translateY(-10px);
   pointer-events: none;
+}
+
+/* 照会モードパネル */
+#display-panel {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 320px;
+  padding: 24px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px var(--shadow-color);
+  z-index: 100;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.display-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.display-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.display-row {
+  display: flex;
+  gap: 12px;
+}
+
+.display-row .display-group {
+  flex: 1;
+}
+
+.display-value {
+  padding: 8px 0;
+  font-size: 14px;
+  color: var(--text-primary);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.display-value.multiline {
+  white-space: pre-wrap;
+  min-height: 40px;
+}
+
+.display-value-link a {
+  color: #667eea;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.display-value-link a:hover {
+  text-decoration: underline;
+}
+
+.display-value-image img {
+  display: block;
+  margin-top: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .form-header {
@@ -327,7 +423,9 @@ textarea {
 
 /* レスポンシブ対応 */
 @media (max-width: 768px) {
-  #form-panel {
+
+  #form-panel,
+  #display-panel {
     top: auto;
     bottom: 0;
     right: 0;
@@ -356,6 +454,7 @@ textarea {
   }
 }
 
-#form-panel {
+#form-panel,
+#display-panel {
   animation: fadeIn 0.3s ease-out;
 }

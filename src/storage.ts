@@ -1,20 +1,35 @@
 import type { Desire } from './types';
 
+// JSONデータをimport
+import initialData from './desires.json';
+
 // LocalStorageのキー
 const STORAGE_KEY = 'greedy-desires';
+
+// データ変換ヘルパー
+function parseDesires(items: any[]): Desire[] {
+    return items.map(item => ({
+        ...item,
+        createdAt: new Date(item.createdAt)
+    }));
+}
 
 // 物慾リストを取得
 export function getDesires(): Desire[] {
     const data = localStorage.getItem(STORAGE_KEY);
-    if (!data) return [];
+
+    // データがない場合は初期データを使用
+    if (!data) {
+        const initial = parseDesires(initialData);
+        if (initial.length > 0) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
+        }
+        return initial;
+    }
 
     try {
         const parsed = JSON.parse(data);
-        // Date型を復元
-        return parsed.map((item: Desire) => ({
-            ...item,
-            createdAt: new Date(item.createdAt)
-        }));
+        return parseDesires(parsed);
     } catch {
         console.error('データの読み込みに失敗しました');
         return [];
@@ -56,4 +71,8 @@ export function updateDesire(id: string, updates: Partial<Desire>): void {
         desires[index] = { ...desires[index], ...updates };
         saveDesires(desires);
     }
+}
+// データを初期化（LocalStorageをクリア）
+export function resetDesires(): void {
+    localStorage.removeItem(STORAGE_KEY);
 }

@@ -1,6 +1,6 @@
 import './style.css';
 import { MatrixRenderer } from './matrix';
-import { getDesires, addDesire, deleteDesire, updateDesire } from './storage';
+import { getDesires, addDesire, deleteDesire, updateDesire, resetDesires } from './storage';
 import type { Desire } from './types';
 
 // アプリケーションの状態
@@ -24,7 +24,7 @@ function handleUpdate(id: string, x: number, y: number): void {
 // 物慾クリック時の処理（詳細表示）
 function handleClick(desire: Desire): void {
     editingDesireId = desire.id;
-    showFormWithData(desire);
+    showDisplayMode(desire);
 }
 
 // マトリクスを再描画
@@ -95,6 +95,8 @@ function showForm(): void {
         return;
     }
 
+    hideDisplayPanel();
+
     editingDesireId = null;
     updateFormTitle('物慾を追加');
     updateSubmitButtonText('追加');
@@ -142,6 +144,73 @@ function showFormWithData(desire: Desire): void {
     }
 }
 
+// 照会モードを表示
+function showDisplayMode(desire: Desire): void {
+    const displayPanel = document.getElementById('display-panel');
+    const formPanel = document.getElementById('form-panel');
+    const addBtn = document.getElementById('add-btn');
+
+    if (displayPanel) {
+        // データを設定
+        const nameEl = document.getElementById('display-name');
+        const importanceEl = document.getElementById('display-importance');
+        const urgencyEl = document.getElementById('display-urgency');
+        const noteEl = document.getElementById('display-note');
+        const imageGroupEl = document.getElementById('display-image-group');
+        const imageEl = document.getElementById('display-image');
+        const webGroupEl = document.getElementById('display-web-group');
+        const webEl = document.getElementById('display-web');
+
+        if (nameEl) nameEl.textContent = desire.name;
+        if (importanceEl) importanceEl.textContent = desire.importance === 'high' ? '高' : '低';
+        if (urgencyEl) urgencyEl.textContent = desire.urgency === 'high' ? '高' : '低';
+        if (noteEl) noteEl.textContent = desire.note || '(なし)';
+
+        // 画像表示
+        if (desire.imageUrl && imageEl && imageGroupEl) {
+            imageEl.innerHTML = `<img src="${desire.imageUrl}" alt="${desire.name}" style="max-width: 100%; border-radius: 4px;">`;
+            imageGroupEl.style.display = 'block';
+        } else if (imageGroupEl) {
+            imageGroupEl.style.display = 'none';
+        }
+
+        // Web URL表示
+        if (desire.webUrl && webEl && webGroupEl) {
+            webEl.innerHTML = `<a href="${desire.webUrl}" target="_blank" rel="noopener noreferrer">Webページ</a>`;
+            webGroupEl.style.display = 'block';
+        } else if (webGroupEl) {
+            webGroupEl.style.display = 'none';
+        }
+
+        // パネルを表示
+        displayPanel.classList.remove('hidden');
+    }
+
+    // フォームパネルを非表示
+    if (formPanel) {
+        formPanel.classList.add('hidden');
+    }
+
+    // 追加ボタンをdisabled風に
+    if (addBtn) {
+        addBtn.classList.add('disabled');
+    }
+}
+
+// 照会モードを非表示
+function hideDisplayPanel(): void {
+    const displayPanel = document.getElementById('display-panel');
+    const addBtn = document.getElementById('add-btn');
+
+    if (displayPanel) {
+        displayPanel.classList.add('hidden');
+    }
+
+    if (addBtn) {
+        addBtn.classList.remove('disabled');
+    }
+}
+
 // フォームを非表示
 function hideForm(): void {
     const formPanel = document.getElementById('form-panel');
@@ -172,7 +241,7 @@ function updateFormTitle(title: string): void {
 
 // 送信ボタンのテキストを更新
 function updateSubmitButtonText(text: string): void {
-    const submitBtn = document.querySelector('.btn-submit') as HTMLButtonElement;
+    const submitBtn = document.querySelector('#desire-form .btn-submit') as HTMLButtonElement;
     if (submitBtn) {
         submitBtn.textContent = text;
     }
@@ -205,10 +274,51 @@ function handleDeleteClick(): void {
 // 追加ボタンの有効/無効を更新
 function updateSubmitButton(): void {
     const nameInput = document.getElementById('name') as HTMLInputElement;
-    const submitBtn = document.querySelector('.btn-submit') as HTMLButtonElement;
+    // フォーム内の送信ボタンのみを対象にする
+    const submitBtn = document.querySelector('#desire-form .btn-submit') as HTMLButtonElement;
     if (nameInput && submitBtn) {
         submitBtn.disabled = !nameInput.value.trim();
     }
+}
+
+// JSONエクスポート処理
+async function handleExport(): Promise<void> {
+    const data = JSON.stringify(desires, null, 2);
+
+    // モダンブラウザ向け File System Access API (保存先選択ダイアログ)
+    if ('showSaveFilePicker' in window) {
+        try {
+            const handle = await (window as any).showSaveFilePicker({
+                suggestedName: 'desires.json',
+                types: [{
+                    description: 'JSON Files',
+                    accept: { 'application/json': ['.json'] },
+                }],
+            });
+            const writable = await handle.createWritable();
+            await writable.write(data);
+            await writable.close();
+            return;
+        } catch (err: any) {
+            // ユーザーがキャンセルした場合
+            if (err.name === 'AbortError') {
+                return;
+            }
+            console.error('File save failed:', err);
+            // エラー時は従来のダウンロードへフォールバック
+        }
+    }
+
+    // 従来のダウンロード処理 (フォールバック)
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'desires.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 }
 
 // アプリケーション初期化
@@ -241,6 +351,23 @@ function init(): void {
         addBtn.addEventListener('click', showForm);
     }
 
+    // JSON出力ボタンのクリック
+    const exportBtn = document.getElementById('export-btn');
+    if (exportBtn) {
+        exportBtn.addEventListener('click', handleExport);
+    }
+
+    // データ初期化ボタンのクリック
+    const resetBtn = document.getElementById('reset-btn');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+            if (confirm('保存されたデータを削除して初期状態に戻しますか？\n（desires.jsonの内容が再読み込みされます）')) {
+                resetDesires();
+                location.reload();
+            }
+        });
+    }
+
     // 閉じるボタンのクリックでフォームを非表示
     const closeBtn = document.getElementById('close-form-btn');
     if (closeBtn) {
@@ -251,6 +378,32 @@ function init(): void {
     const deleteBtn = document.getElementById('delete-btn');
     if (deleteBtn) {
         deleteBtn.addEventListener('click', handleDeleteClick);
+    }
+
+    // 照会モードの「変更」ボタン
+    const editBtn = document.getElementById('edit-btn');
+    if (editBtn) {
+        editBtn.addEventListener('click', () => {
+            if (editingDesireId) {
+                const desire = desires.find(d => d.id === editingDesireId);
+                if (desire) {
+                    showFormWithData(desire);
+                    hideDisplayPanel();
+                }
+            }
+        });
+    }
+
+    // 照会モードの「閉じる」ボタン（×ボタン）
+    const closeDisplayBtn = document.getElementById('close-display-btn');
+    if (closeDisplayBtn) {
+        closeDisplayBtn.addEventListener('click', hideDisplayPanel);
+    }
+
+    // 照会モードの「閉じる」ボタン（下部ボタン）
+    const closeDisplayBtnBottom = document.getElementById('close-display-btn-bottom');
+    if (closeDisplayBtnBottom) {
+        closeDisplayBtnBottom.addEventListener('click', hideDisplayPanel);
     }
 
     // ウィンドウリサイズ時に再描画

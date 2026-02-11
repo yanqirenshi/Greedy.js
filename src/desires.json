@@ -1,0 +1,200 @@
+[
+  {
+    "name": "トヨタ・ランドクルーザー 100",
+    "importance": "low",
+    "urgency": "low",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/2005_Toyota_Land_Cruiser-100_01.jpg/500px-2005_Toyota_Land_Cruiser-100_01.jpg",
+    "webUrl": "https://ja.wikipedia.org/wiki/%E3%83%88%E3%83%A8%E3%82%BF%E3%83%BB%E3%83%A9%E3%83%B3%E3%83%89%E3%82%AF%E3%83%AB%E3%83%BC%E3%82%B6%E3%83%BC#100%E7%B3%BB%EF%BC%881998%E5%B9%B4_-_2007%E5%B9%B4%EF%BC%89",
+    "id": "a8be8e2f-5f66-463d-a174-92ee92059feb",
+    "createdAt": "2026-02-11T07:32:58.728Z",
+    "x": 0.7191011235955056,
+    "y": 0.7238307349665924
+  },
+  {
+    "name": "充電式エアダスタ AS180D",
+    "importance": "high",
+    "urgency": "low",
+    "imageUrl": "https://www.makita.co.jp/app/img_product/AS180D.png?2026111",
+    "webUrl": "https://www.makita.co.jp/product/detail/?&cat=&voltid=&catm=%E3%82%A8%E3%82%A2%E3%83%80%E3%82%B9%E3%82%BF&model=AS180D&gmodel=&acce=&btry=&accegrp=&pgrp=&catl=04&title=",
+    "id": "fff99a07-da10-4d01-b67e-aa6a1f02b899",
+    "createdAt": "2026-02-11T08:45:44.482Z",
+    "x": 0.37144745538664903,
+    "y": 0.7869565217391304
+  },
+  {
+    "name": "中尾アルミ製作所 キングフロン ステンキャストハンドル 深型フライパン 24cm",
+    "importance": "high",
+    "urgency": "high",
+    "imageUrl": "https://m.media-amazon.com/images/I/61GKNSLsK3L._AC_SX679_.jpg",
+    "webUrl": "https://www.amazon.co.jp/dp/B00BQWJKAM/?coliid=I1FPTSSLOM6H5E&colid=AKAR9712FVR0&ref_=list_c_wl_gv_ov_lig_pi_dp&th=1",
+    "id": "67bd50cc-c16c-43b2-a994-9ed63126ef02",
+    "createdAt": "2026-02-11T08:48:16.981Z",
+    "x": 0.14540646711249897,
+    "y": 0.14173913043478262
+  },
+  {
+    "name": "Reencle Gravity 家庭用 生ごみ処理機 ハイブリッド式（ バイオ式 × 乾燥式 ）",
+    "importance": "high",
+    "urgency": "low",
+    "imageUrl": "https://m.media-amazon.com/images/I/51BxyVlE83L._AC_SX679_.jpg",
+    "webUrl": "https://www.amazon.co.jp/gp/aw/d/B0F5MZ4CFX/?_encoding=UTF8&pd_rd_plhdr=t&aaxitk=f552d356ae9ddfc7d35dc86a17ebab57&hsa_cr_id=0&qid=1770799719&sr=1-3-ac08f2b1-eb5b-4f1a-aa64-9e8f448c33ed&ref_=sbx_s_sparkle_sbtcd_asin_2_img&pd_rd_w=qN1Vj&content-id=amzn1.sym.f0facdbd-e6c4-4c86-85ba-0b3f009056ed%3Aamzn1.sym.f0facdbd-e6c4-4c86-85ba-0b3f009056ed&pf_rd_p=f0facdbd-e6c4-4c86-85ba-0b3f009056ed&pf_rd_r=APWWWAHFTD6P72GJE5A9&pd_rd_wg=xrSHL&pd_rd_r=b0194fb5-6252-4630-a699-f21bf39820bd&th=1",
+    "id": "51d9bb82-9313-4f0d-8aab-76ce304a71c0",
+    "createdAt": "2026-02-11T08:49:35.705Z",
+    "x": 0.1586252377668281,
+    "y": 0.7956521739130434
+  },
+  {
+    "name": "間仕切りできる両面ディスプレイができるレコードラック",
+    "importance": "low",
+    "urgency": "high",
+    "imageUrl": "https://m.media-amazon.com/images/I/71rhUnbfcyL._AC_SX679_.jpg",
+    "webUrl": "https://www.amazon.co.jp/dp/B0D8FMC2YL/?coliid=I11JUS2EQQRNRJ&colid=AKAR9712FVR0&ref_=list_c_wl_gv_ov_lig_pi_dp&th=1",
+    "id": "1e52f3fc-6250-402f-b9d8-191dbc9db4a3",
+    "createdAt": "2026-02-11T08:50:20.349Z",
+    "x": 0.760079312623926,
+    "y": 0.22608695652173913
+  },
+  {
+    "name": "ingCloud",
+    "importance": "low",
+    "urgency": "low",
+    "imageUrl": "https://www.kokuyo-furniture.co.jp/products/office/special/ing-series/ingcloud/img/spec/slide1.jpg",
+    "webUrl": "https://www.kokuyo-furniture.co.jp/products/office/special/ing-series/ingcloud/",
+    "id": "e25e212b-97da-4963-ac30-e0452bf63b73",
+    "createdAt": "2026-02-11T08:52:14.371Z",
+    "x": 0.7983441750443524,
+    "y": 0.720489977728285
+  },
+  {
+    "name": "ROKSAN RAD-1 Radius",
+    "importance": "high",
+    "urgency": "low",
+    "imageUrl": "https://auctions.c.yimg.jp/images.auctions.yahoo.co.jp/image/dr000/auc0103/user/d736ac283d694147b35e62272f06eaf4337573287dd9d552e770c86a552b63d4/i-img1200x510-17420107661929xijq3u109099.jpg",
+    "webUrl": "https://auctions.yahoo.co.jp/jp/auction/h1177112830",
+    "id": "db3604e2-09a2-4faa-a313-b83685fd83c5",
+    "createdAt": "2026-02-11T09:11:07.912Z",
+    "x": 0.26846499678869623,
+    "y": 0.6426086956521739
+  },
+  {
+    "name": "エレクトロボイス SP 12",
+    "importance": "high",
+    "urgency": "low",
+    "imageUrl": "https://i.ebayimg.com/images/g/1f8AAeSwV5tojkVU/s-l1600.webp",
+    "webUrl": "https://www.ebay.com/itm/205649009928?_trkparms=amclksrc%3DITM%26aid%3D777008%26algo%3DPERSONAL.TOPIC%26ao%3D1%26asc%3D20250324082002%26meid%3D5800f390de2a49f780b0a93eafbcdcc5%26pid%3D101771%26rk%3D1%26rkt%3D1%26mehot%3Dnone%26itm%3D205649009928%26pmt%3D0%26noa%3D1%26pg%3D4375194%26algv%3DWatchlistVariantWithPSItemDR_BP%26brand%3DElectro-Voice&_trksid=p4375194.c101771.m47999&_trkparms=parentrq%3A4bebeb1e19c0a3748d6ef9c8fffcd34e%7Cpageci%3Ac32226ad-0727-11f1-9f0e-bec5e4c3713a%7Ciid%3A1%7Cvlpname%3Avlp_homepage",
+    "id": "723a0b81-d5a4-4fe2-b24b-11dcb99bdb1b",
+    "createdAt": "2026-02-11T09:14:42.199Z",
+    "x": 0.16259086896312686,
+    "y": 0.6443478260869565
+  },
+  {
+    "name": "SUWADA爪切りブラックL",
+    "importance": "low",
+    "urgency": "low",
+    "imageUrl": "https://m.media-amazon.com/images/I/51Kf5z4716L._AC_SX679_.jpg",
+    "webUrl": "https://www.amazon.co.jp/dp/B011T5JGHC/?coliid=I1TQ35LUI61L57&colid=3C1B27LZ4F9BG&psc=1&ref_=list_c_wl_gv_ov_lig_pi_dp",
+    "id": "d4b28c4f-eeb9-42b5-a983-3f0d6fdb2952",
+    "createdAt": "2026-02-11T10:30:01.239Z",
+    "x": 0.6298048492016558,
+    "y": 0.7271714922048997
+  },
+  {
+    "name": "揚げ物用 吸油を減らす 調理補助具",
+    "importance": "low",
+    "urgency": "low",
+    "imageUrl": "https://m.media-amazon.com/images/I/81QuTUJPNbL._AC_SX679_.jpg",
+    "webUrl": "https://www.amazon.co.jp/dp/B0FJ5ZGZNL/?coliid=I2N3H9OS3T1AIH&colid=3C1B27LZ4F9BG&psc=1&ref_=list_c_wl_gv_ov_lig_pi_dp",
+    "id": "3920df2b-e408-4699-89ae-591248e183ee",
+    "createdAt": "2026-02-11T10:30:55.258Z",
+    "x": 0.6777054997043169,
+    "y": 0.8619153674832962
+  },
+  {
+    "name": "Shokz (ショックス) OpenMeet ビジネスイヤホン",
+    "importance": "high",
+    "urgency": "low",
+    "imageUrl": "https://m.media-amazon.com/images/I/51PvgZczTwL._AC_SX679_.jpg",
+    "webUrl": "https://www.amazon.co.jp/dp/B0DJMHPWS9/?coliid=I3CQWK8BUZ7WBL&colid=3C1B27LZ4F9BG&ref_=list_c_wl_gv_ov_lig_pi_dp&th=1",
+    "id": "0625b252-b894-49c8-a9c4-13fac6d909e4",
+    "createdAt": "2026-02-11T10:32:07.714Z",
+    "x": 0.26846499678869623,
+    "y": 0.7843478260869565
+  },
+  {
+    "name": "FUNホース F121C 透明糸入り巻き クリアー+ピンクライン",
+    "importance": "high",
+    "urgency": "high",
+    "imageUrl": "https://m.media-amazon.com/images/I/61nWuuGaW2L._AC_SX679_.jpg",
+    "webUrl": "https://www.amazon.co.jp/dp/B07Q51BRK3/?coliid=I2BBV1R2A6Q76W&colid=AKAR9712FVR0&ref_=list_c_wl_gv_ov_lig_pi_dp&th=1",
+    "id": "5af8cd55-d251-49e7-a88a-c2523bdf106c",
+    "createdAt": "2026-02-11T10:32:46.258Z",
+    "x": 0.13813614325261794,
+    "y": 0.3130434782608696
+  },
+  {
+    "name": "マキタ(Makita) 充電式クリーナ（白） 18V バッテリ",
+    "importance": "high",
+    "urgency": "low",
+    "imageUrl": "https://m.media-amazon.com/images/I/61+GPHhkZYL._AC_SX679_.jpg",
+    "webUrl": "https://www.amazon.co.jp/dp/B0C1FHH8W8/?coliid=I2RZWRKEGYF8HR&colid=AKAR9712FVR0&psc=1&ref_=list_c_wl_gv_ov_lig_pi_dp",
+    "id": "bffcffa5-6494-430f-b5f9-f96de7a31189",
+    "createdAt": "2026-02-11T10:33:25.028Z",
+    "x": 0.3701255783212161,
+    "y": 0.6504347826086957
+  },
+  {
+    "name": "オットマン「オースチンKD」革",
+    "importance": "low",
+    "urgency": "low",
+    "imageUrl": "https://www.idc-otsuka.jp/item/html/upload/save_image/0808100925_64d195c5d8dda.jpg",
+    "webUrl": "https://www.idc-otsuka.jp/item/products/detail/23620",
+    "id": "691cfb31-f1fc-4f92-85f3-ec7d5aff66b7",
+    "createdAt": "2026-02-11T10:35:53.765Z",
+    "x": 0.7510348905972797,
+    "y": 0.8596881959910914
+  },
+  {
+    "name": "Foot Fit 3",
+    "importance": "high",
+    "urgency": "low",
+    "imageUrl": "https://www.mtgec.jp/wellness/sixpad/products/footfit3/assets/img/img_easy_ff3.png",
+    "webUrl": "https://www.mtgec.jp/wellness/sixpad/products/footfit3/",
+    "id": "15a4177b-1bb6-43d8-8873-4bda89dd8c99",
+    "createdAt": "2026-02-11T11:25:29.650Z",
+    "x": 0.16120744042466983,
+    "y": 0.9121739130434783
+  },
+  {
+    "name": "Retro case for iPhone 15/16",
+    "importance": "low",
+    "urgency": "low",
+    "imageUrl": "https://www.fotorgear.com/cdn/shop/files/fotorgear-retro-case-for-iphone-15-16-1190513347.jpg?v=1756735961",
+    "webUrl": "https://www.fotorgear.com/products/retro-case-for-iphone-15-16?variant=42325740552305",
+    "id": "851e7342-e149-491e-a8f4-f6142831fa7c",
+    "createdAt": "2026-02-11T11:26:31.569Z",
+    "x": 0.289491057159565,
+    "y": 0.14173913043478262
+  },
+  {
+    "name": "Plaud Note Pro",
+    "importance": "high",
+    "urgency": "low",
+    "imageUrl": "https://cdn.shopifycdn.net/s/files/1/0638/2983/5860/files/plaud-note-pro-product-zip1_83919cda-67f2-4ac9-9302-eea1fefa4f6b.png",
+    "webUrl": "https://jp.plaud.ai/products/plaud-note-pro",
+    "id": "602a9a34-ba52-4741-af6b-4117d2dea4b7",
+    "createdAt": "2026-02-11T11:38:21.579Z",
+    "x": 0.26718047527296085,
+    "y": 0.9069565217391304
+  },
+  {
+    "name": "全自動洗濯機 ZABOON（ザブーン） 洗濯9kg",
+    "importance": "high",
+    "urgency": "high",
+    "imageUrl": "https://img1.kakaku.k-img.com/images/productimage/l/K0001685351.jpg",
+    "webUrl": "https://kakaku.com/item/K0001685351/",
+    "id": "14aa36cc-2a3f-449e-896c-a4696443a884",
+    "createdAt": "2026-02-11T12:47:43.602Z",
+    "x": 0.2881691800941321,
+    "y": 0.3139130434782609
+  }
+]

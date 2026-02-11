@@ -21,6 +21,57 @@
     <!-- 追加ボタン（フローティング） -->
     <button id="add-btn" class="floating-add-btn" title="物慾を追加">＋</button>
 
+    <!-- JSON出力ボタン -->
+    <button id="export-btn" class="floating-export-btn" title="保存されたデータをJSON形式でダウンロード">JSON出力</button>
+
+    <!-- データ初期化ボタン -->
+    <button id="reset-btn" class="floating-reset-btn" title="保存されたデータを削除して初期状態に戻す">初期化</button>
+
+    <!-- 照会モードパネル（フローティング、初期非表示） -->
+    <div id="display-panel" class="hidden">
+      <div class="form-header">
+        <h2 id="display-title">物慾の詳細</h2>
+        <button type="button" id="close-display-btn" class="close-btn">×</button>
+      </div>
+      <div class="display-content">
+        <div class="display-group">
+          <label>名前</label>
+          <div id="display-name" class="display-value"></div>
+        </div>
+
+        <div class="display-row">
+          <div class="display-group">
+            <label>重要度</label>
+            <div id="display-importance" class="display-value"></div>
+          </div>
+          <div class="display-group">
+            <label>緊急度</label>
+            <div id="display-urgency" class="display-value"></div>
+          </div>
+        </div>
+
+        <div class="display-group" id="display-image-group">
+          <label>画像</label>
+          <div id="display-image" class="display-value-image"></div>
+        </div>
+
+        <div class="display-group" id="display-web-group">
+          <label>Webページ</label>
+          <div id="display-web" class="display-value-link"></div>
+        </div>
+
+        <div class="display-group">
+          <label>メモ</label>
+          <div id="display-note" class="display-value multiline"></div>
+        </div>
+
+        <div class="form-buttons">
+          <button type="button" id="edit-btn" class="btn-submit">変更</button>
+          <button type="button" id="close-display-btn-bottom" class="btn-close">閉じる</button>
+        </div>
+      </div>
+    </div>
+
     <!-- 登録フォーム（フローティング、初期非表示） -->
     <div id="form-panel" class="hidden">
       <div class="form-header">
