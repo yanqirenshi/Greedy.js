@@ -95,31 +95,60 @@ body {
   box-shadow: none;
 }
 
-/* フローティングJSON出力ボタン */
-.floating-export-btn {
+/* 下部コントロール群 */
+.bottom-controls {
   position: fixed;
-  top: 20px;
-  left: 20px;
-  padding: 8px 16px;
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  background: var(--bg-glass);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  bottom: 24px;
+  left: 24px;
+  transform: none;
+  display: flex;
+  gap: 8px;
+  padding: 6px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50px;
+  z-index: 90;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+.btn-control {
+  padding: 10px 24px;
+  background: transparent;
+  border: none;
+  border-radius: 40px;
   color: var(--text-secondary);
   font-family: var(--font-family);
   font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  z-index: 99;
-  box-shadow: 0 4px 12px var(--shadow-color);
+  min-width: auto;
 }
 
-.floating-export-btn:hover {
-  background: var(--bg-primary);
+.btn-control:hover {
+  background: rgba(0, 0, 0, 0.05);
   color: var(--text-primary);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px var(--shadow-color);
+  transform: translateY(-1px);
+}
+
+.btn-control:active {
+  transform: translateY(0);
+}
+
+#export-btn {
+  color: #667eea;
+}
+
+#export-btn:hover {
+  background: rgba(102, 126, 234, 0.1);
+  color: #5a67d8;
+}
+
+#reset-btn:hover {
+  background: rgba(239, 83, 80, 0.1);
+  color: #EF5350;
 }
 
 /* フォームパネル */
@@ -409,7 +438,7 @@ textarea {
 /* マトリクス内の要素スタイル */
 .quadrant-label {
   font-family: var(--font-family);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: none;
 }
 
 .axis-label {

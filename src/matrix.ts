@@ -73,15 +73,35 @@ export class MatrixRenderer {
                 .attr('stroke-opacity', 0.3)
                 .attr('stroke-width', 1);
 
+            // 象限ごとのラベル色（背景色より少し濃い色 - さらに薄く、パステル調に）
+            let labelColor = '#999';
+            switch (q.id) {
+                case 'top-left': // #EF5350 -> #E57373
+                    labelColor = '#E57373';
+                    break;
+                case 'top-right': // #FFA726 -> #FFB74D
+                    labelColor = '#FFB74D';
+                    break;
+                case 'bottom-left': // #66BB6A -> #81C784
+                    labelColor = '#81C784';
+                    break;
+                case 'bottom-right': // #78909C -> #90A4AE
+                    labelColor = '#90A4AE';
+                    break;
+            }
+
             // 象限のラベル
             grid.append('text')
                 .attr('class', 'quadrant-label')
                 .attr('x', x + this.innerWidth / 4)
-                .attr('y', y + 30)
+                .attr('y', y + this.innerHeight / 4)
                 .attr('text-anchor', 'middle')
-                .attr('fill', q.color)
-                .attr('font-size', '18px')
-                .attr('font-weight', '700')
+                .attr('dominant-baseline', 'central')
+                .attr('fill', labelColor)
+                .attr('font-size', '88px')
+                .attr('font-weight', 'bold')
+                .style('pointer-events', 'none')
+                .style('user-select', 'none')
                 .text(q.label);
         });
 
