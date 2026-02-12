@@ -9,16 +9,16 @@ let renderer: MatrixRenderer;
 let editingDesireId: string | null = null; // 編集中の物慾ID（nullなら新規追加モード）
 
 // 物慾を削除して再描画
-function handleDelete(id: string): void {
-    deleteDesire(id);
-    desires = getDesires();
+async function handleDelete(id: string): Promise<void> {
+    await deleteDesire(id);
+    desires = await getDesires();
     refreshMatrix();
 }
 
 // 物慾の位置を更新
-function handleUpdate(id: string, x: number, y: number): void {
-    updateDesire(id, { x, y });
-    desires = getDesires();
+async function handleUpdate(id: string, x: number, y: number): Promise<void> {
+    await updateDesire(id, { x, y });
+    desires = await getDesires();
 }
 
 // 物慾クリック時の処理（詳細表示）
@@ -33,7 +33,7 @@ function refreshMatrix(): void {
 }
 
 // フォーム送信時の処理
-function handleFormSubmit(event: Event): void {
+async function handleFormSubmit(event: Event): Promise<void> {
     event.preventDefault();
 
     const form = event.target as HTMLFormElement;
@@ -54,7 +54,7 @@ function handleFormSubmit(event: Event): void {
 
     if (editingDesireId) {
         // 編集モード: 既存データを更新
-        updateDesire(editingDesireId, {
+        await updateDesire(editingDesireId, {
             name: name.trim(),
             importance,
             urgency,
@@ -64,7 +64,7 @@ function handleFormSubmit(event: Event): void {
         });
     } else {
         // 新規追加モード
-        addDesire({
+        await addDesire({
             name: name.trim(),
             importance,
             urgency,
@@ -75,7 +75,7 @@ function handleFormSubmit(event: Event): void {
     }
 
     // 状態を更新して再描画
-    desires = getDesires();
+    desires = await getDesires();
     refreshMatrix();
 
     // フォームをリセットして閉じる
@@ -264,9 +264,9 @@ function hideDeleteButton(): void {
 }
 
 // 削除ボタンクリック時の処理
-function handleDeleteClick(): void {
+async function handleDeleteClick(): Promise<void> {
     if (editingDesireId && confirm('この物慾を削除しますか？')) {
-        handleDelete(editingDesireId);
+        await handleDelete(editingDesireId);
         hideForm();
     }
 }
@@ -322,9 +322,9 @@ async function handleExport(): Promise<void> {
 }
 
 // アプリケーション初期化
-function init(): void {
+async function init(): Promise<void> {
     // 保存済みデータを読み込み
-    desires = getDesires();
+    desires = await getDesires();
 
     // マトリクスレンダラーを初期化
     renderer = new MatrixRenderer('#matrix');
@@ -360,9 +360,9 @@ function init(): void {
     // データ初期化ボタンのクリック
     const resetBtn = document.getElementById('reset-btn');
     if (resetBtn) {
-        resetBtn.addEventListener('click', () => {
+        resetBtn.addEventListener('click', async () => {
             if (confirm('保存されたデータを削除して初期状態に戻しますか？\n（desires.jsonの内容が再読み込みされます）')) {
-                resetDesires();
+                await resetDesires();
                 location.reload();
             }
         });

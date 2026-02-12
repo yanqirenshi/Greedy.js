@@ -6,8 +6,8 @@ import { QUADRANTS } from './types';
 const MARGIN = { top: 60, right: 40, bottom: 60, left: 80 };
 
 // コールバック型定義
-type DeleteCallback = (id: string) => void;
-type UpdateCallback = (id: string, x: number, y: number) => void;
+type DeleteCallback = (id: string) => void | Promise<void>;
+type UpdateCallback = (id: string, x: number, y: number) => void | Promise<void>;
 type ClickCallback = (desire: Desire) => void;
 
 // マトリクス描画クラス
