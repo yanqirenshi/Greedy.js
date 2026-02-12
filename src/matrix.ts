@@ -55,10 +55,10 @@ export class MatrixRenderer {
 
         const grid = this.mainGroup.append('g').attr('class', 'grid');
 
-        // 各象限を描画（左が重要度高、右が重要度低）
+        // 各象限を描画（X軸が緊急度（左:高、右:低）、Y軸が重要度）
         QUADRANTS.forEach(q => {
-            const x = q.importance === 'high' ? 0 : this.innerWidth / 2;
-            const y = q.urgency === 'high' ? 0 : this.innerHeight / 2;
+            const x = q.urgency === 'high' ? 0 : this.innerWidth / 2;
+            const y = q.importance === 'high' ? 0 : this.innerHeight / 2;
 
             // 象限の背景
             grid.append('rect')
@@ -76,16 +76,16 @@ export class MatrixRenderer {
             // 象限ごとのラベル色（背景色より少し濃い色 - さらに薄く、パステル調に）
             let labelColor = '#999';
             switch (q.id) {
-                case 'top-left': // #EF5350 -> #E57373
+                case 'top-left': // すぐ買う #EF5350 -> #E57373
                     labelColor = '#E57373';
                     break;
-                case 'top-right': // #FFA726 -> #FFB74D
-                    labelColor = '#FFB74D';
-                    break;
-                case 'bottom-left': // #66BB6A -> #81C784
+                case 'top-right': // 計画的に #66BB6A -> #81C784
                     labelColor = '#81C784';
                     break;
-                case 'bottom-right': // #78909C -> #90A4AE
+                case 'bottom-left': // いつか #FFB74D -> #FFB74D
+                    labelColor = '#FFB74D';
+                    break;
+                case 'bottom-right': // 不要かも #78909C -> #90A4AE
                     labelColor = '#90A4AE';
                     break;
             }
@@ -113,7 +113,7 @@ export class MatrixRenderer {
     private drawAxisLabels(): void {
         this.mainGroup.selectAll('.axis-label').remove();
 
-        // X軸（重要度）
+        // X軸（緊急度）
         this.mainGroup.append('text')
             .attr('class', 'axis-label')
             .attr('x', this.innerWidth / 2)
@@ -121,9 +121,9 @@ export class MatrixRenderer {
             .attr('text-anchor', 'middle')
             .attr('fill', '#1a1a2e')
             .attr('font-size', '14px')
-            .text('← 重要度');
+            .text('← 緊急度');
 
-        // 重要度 低/高
+        // 緊急度 低/高
         this.mainGroup.append('text')
             .attr('class', 'axis-label')
             .attr('x', this.innerWidth / 4)
@@ -142,16 +142,16 @@ export class MatrixRenderer {
             .attr('font-size', '12px')
             .text('低');
 
-        // Y軸（緊急度）
+        // Y軸（重要度）
         this.mainGroup.append('text')
             .attr('class', 'axis-label')
             .attr('transform', `translate(-50, ${this.innerHeight / 2}) rotate(-90)`)
             .attr('text-anchor', 'middle')
             .attr('fill', '#1a1a2e')
             .attr('font-size', '14px')
-            .text('緊急度 →');
+            .text('← 重要度');
 
-        // 緊急度 低/高
+        // 重要度 低/高
         this.mainGroup.append('text')
             .attr('class', 'axis-label')
             .attr('transform', `translate(-30, ${this.innerHeight * 3 / 4})`)
@@ -208,10 +208,10 @@ export class MatrixRenderer {
         );
         const indexInQuadrant = sameQuadrantItems.findIndex(d => d.id === desire.id);
 
-        // 象限の基準位置を計算（左が重要度高、右が重要度低）
+        // 象限の基準位置を計算（X軸が緊急度（左:高、右:低）、Y軸が重要度）
         const quadrant = QUADRANTS.find(q => q.id === quadrantId)!;
-        const baseX = quadrant.importance === 'high' ? 0 : this.innerWidth / 2;
-        const baseY = quadrant.urgency === 'high' ? 0 : this.innerHeight / 2;
+        const baseX = quadrant.urgency === 'high' ? 0 : this.innerWidth / 2;
+        const baseY = quadrant.importance === 'high' ? 0 : this.innerHeight / 2;
 
         // グリッド配置（3列）
         const cols = 3;
@@ -231,11 +231,11 @@ export class MatrixRenderer {
         return QUADRANTS.find(q => q.id === quadrantId)!;
     }
 
-    // 物慾の象限IDを取得（左が重要度高、右が重要度低）
+    // 物慾の象限IDを取得（X軸が緊急度（左:高、右:低）、Y軸が重要度）
     private getQuadrantId(desire: Desire): string {
         if (desire.importance === 'high' && desire.urgency === 'high') return 'top-left';
-        if (desire.importance === 'low' && desire.urgency === 'high') return 'top-right';
-        if (desire.importance === 'high' && desire.urgency === 'low') return 'bottom-left';
+        if (desire.importance === 'high' && desire.urgency === 'low') return 'top-right';
+        if (desire.importance === 'low' && desire.urgency === 'high') return 'bottom-left';
         return 'bottom-right';
     }
 

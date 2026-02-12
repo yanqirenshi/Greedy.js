@@ -24,10 +24,10 @@ export interface QuadrantInfo {
     color: string;
 }
 
-// 象限の定義（重要度×緊急度） ※左が重要度高、右が重要度低
+// 象限の定義（緊急度×重要度） ※X軸が緊急度（左:高、右:低）、Y軸が重要度
 export const QUADRANTS: QuadrantInfo[] = [
     { id: 'top-left', label: 'すぐ買う', importance: 'high', urgency: 'high', color: '#EF5350' },
-    { id: 'top-right', label: 'いつか', importance: 'low', urgency: 'high', color: '#FFB74D' },
-    { id: 'bottom-left', label: '計画的に', importance: 'high', urgency: 'low', color: '#66BB6A' },
+    { id: 'top-right', label: '計画的に', importance: 'high', urgency: 'low', color: '#66BB6A' },
+    { id: 'bottom-left', label: 'いつか', importance: 'low', urgency: 'high', color: '#FFB74D' },
     { id: 'bottom-right', label: '不要かも', importance: 'low', urgency: 'low', color: '#78909C' },
 ];
