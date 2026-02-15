@@ -137,9 +137,7 @@ body {
   transform: translateY(0);
 }
 
-#export-btn {
-  color: #667eea;
-}
+
 
 #export-btn:hover {
   background: rgba(102, 126, 234, 0.1);
@@ -447,7 +445,7 @@ textarea {
 
 .desire-name {
   font-family: var(--font-family);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9), 0 0 4px rgba(255, 255, 255, 0.8);
 }
 
 /* レスポンシブ対応 */

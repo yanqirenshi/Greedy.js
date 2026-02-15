@@ -1,12 +1,13 @@
 import './style.css';
-import { MatrixRenderer } from './matrix';
-import { getDesires, addDesire, deleteDesire, updateDesire, resetDesires } from './storage';
+import { MatrixRenderer } from './renders/MatrixRenderer';
+import { DesireForm } from './renders/DesireForm';
+import { getDesires, deleteDesire, resetDesires } from './storage';
 import type { Desire } from './types';
 
 // アプリケーションの状態
 let desires: Desire[] = [];
 let renderer: MatrixRenderer;
-let editingDesireId: string | null = null; // 編集中の物慾ID（nullなら新規追加モード）
+let form: DesireForm;
 
 // 物慾を削除して再描画
 async function handleDelete(id: string): Promise<void> {
@@ -17,14 +18,14 @@ async function handleDelete(id: string): Promise<void> {
 
 // 物慾の位置を更新
 async function handleUpdate(id: string, x: number, y: number): Promise<void> {
+    const { updateDesire } = await import('./storage');
     await updateDesire(id, { x, y });
     desires = await getDesires();
 }
 
-// 物慾クリック時の処理（詳細表示）
+// 物慾クリック時の処理（照会モード表示）
 function handleClick(desire: Desire): void {
-    editingDesireId = desire.id;
-    showDisplayMode(desire);
+    form.showDisplay(desire);
 }
 
 // マトリクスを再描画
@@ -32,253 +33,56 @@ function refreshMatrix(): void {
     renderer.refresh(desires, handleDelete, handleUpdate, handleClick);
 }
 
-// フォーム送信時の処理
-async function handleFormSubmit(event: Event): Promise<void> {
-    event.preventDefault();
-
-    const form = event.target as HTMLFormElement;
-    const formData = new FormData(form);
-
-    const name = formData.get('name') as string;
-    const importance = formData.get('importance') as 'low' | 'high';
-    const urgency = formData.get('urgency') as 'low' | 'high';
-    const imageUrl = formData.get('imageUrl') as string;
-    const webUrl = formData.get('webUrl') as string;
-    const note = formData.get('note') as string;
-
-    // バリデーション
-    if (!name.trim()) {
-        alert('名前を入力してください');
-        return;
-    }
-
-    if (editingDesireId) {
-        // 編集モード: 既存データを更新
-        await updateDesire(editingDesireId, {
-            name: name.trim(),
-            importance,
-            urgency,
-            imageUrl: imageUrl.trim() || undefined,
-            webUrl: webUrl.trim() || undefined,
-            note: note.trim() || undefined
-        });
-    } else {
-        // 新規追加モード
-        await addDesire({
-            name: name.trim(),
-            importance,
-            urgency,
-            imageUrl: imageUrl.trim() || undefined,
-            webUrl: webUrl.trim() || undefined,
-            note: note.trim() || undefined
-        });
-    }
-
-    // 状態を更新して再描画
-    desires = await getDesires();
-    refreshMatrix();
-
-    // フォームをリセットして閉じる
-    form.reset();
-    editingDesireId = null;
-    updateSubmitButton();
-    hideForm();
-}
-
-// フォームを新規追加モードで表示（トグル動作）
-function showForm(): void {
-    const formPanel = document.getElementById('form-panel');
-
-    // フォームが既に開いている場合は閉じる
-    if (formPanel && !formPanel.classList.contains('hidden')) {
-        hideForm();
-        return;
-    }
-
-    hideDisplayPanel();
-
-    editingDesireId = null;
-    updateFormTitle('物慾を追加');
-    updateSubmitButtonText('追加');
-    hideDeleteButton();
-
-    const addBtn = document.getElementById('add-btn');
-    if (formPanel) {
-        formPanel.classList.remove('hidden');
-    }
-    if (addBtn) {
-        addBtn.classList.add('disabled');
-    }
-}
-
-// フォームを詳細表示モードで表示
-function showFormWithData(desire: Desire): void {
-    updateFormTitle('物慾の詳細');
-    updateSubmitButtonText('保存');
-    showDeleteButton();
-
-    // フォームにデータを設定
-    const nameInput = document.getElementById('name') as HTMLInputElement;
-    const importanceSelect = document.getElementById('importance') as HTMLSelectElement;
-    const urgencySelect = document.getElementById('urgency') as HTMLSelectElement;
-    const imageUrlInput = document.getElementById('imageUrl') as HTMLInputElement;
-    const webUrlInput = document.getElementById('webUrl') as HTMLInputElement;
-    const noteTextarea = document.getElementById('note') as HTMLTextAreaElement;
-
-    if (nameInput) nameInput.value = desire.name;
-    if (importanceSelect) importanceSelect.value = desire.importance;
-    if (urgencySelect) urgencySelect.value = desire.urgency;
-    if (imageUrlInput) imageUrlInput.value = desire.imageUrl || '';
-    if (webUrlInput) webUrlInput.value = desire.webUrl || '';
-    if (noteTextarea) noteTextarea.value = desire.note || '';
-
-    updateSubmitButton();
-
-    const formPanel = document.getElementById('form-panel');
-    const addBtn = document.getElementById('add-btn');
-    if (formPanel) {
-        formPanel.classList.remove('hidden');
-    }
-    if (addBtn) {
-        addBtn.classList.add('disabled');
-    }
-}
-
-// 照会モードを表示
-function showDisplayMode(desire: Desire): void {
-    const displayPanel = document.getElementById('display-panel');
-    const formPanel = document.getElementById('form-panel');
-    const addBtn = document.getElementById('add-btn');
-
-    if (displayPanel) {
-        // データを設定
-        const nameEl = document.getElementById('display-name');
-        const importanceEl = document.getElementById('display-importance');
-        const urgencyEl = document.getElementById('display-urgency');
-        const noteEl = document.getElementById('display-note');
-        const imageGroupEl = document.getElementById('display-image-group');
-        const imageEl = document.getElementById('display-image');
-        const webGroupEl = document.getElementById('display-web-group');
-        const webEl = document.getElementById('display-web');
-
-        if (nameEl) nameEl.textContent = desire.name;
-        if (importanceEl) importanceEl.textContent = desire.importance === 'high' ? '高' : '低';
-        if (urgencyEl) urgencyEl.textContent = desire.urgency === 'high' ? '高' : '低';
-        if (noteEl) noteEl.textContent = desire.note || '(なし)';
-
-        // 画像表示
-        if (desire.imageUrl && imageEl && imageGroupEl) {
-            imageEl.innerHTML = `<img src="${desire.imageUrl}" alt="${desire.name}" style="max-width: 100%; border-radius: 4px;">`;
-            imageGroupEl.style.display = 'block';
-        } else if (imageGroupEl) {
-            imageGroupEl.style.display = 'none';
+// SVG内の画像をBase64に変換して埋め込む
+async function embedImages(svgElement: SVGElement): Promise<void> {
+    const images = svgElement.querySelectorAll('image');
+    for (const img of Array.from(images)) {
+        const url = img.getAttribute('href');
+        if (url) {
+            try {
+                const response = await fetch(url);
+                const blob = await response.blob();
+                const reader = new FileReader();
+                await new Promise((resolve, reject) => {
+                    reader.onloadend = () => {
+                        img.setAttribute('href', reader.result as string);
+                        resolve(null);
+                    };
+                    reader.onerror = reject;
+                    reader.readAsDataURL(blob);
+                });
+            } catch (e) {
+                console.warn(`Failed to embed image: ${url}`, e);
+                // 失敗した場合は元のURLを維持
+            }
         }
-
-        // Web URL表示
-        if (desire.webUrl && webEl && webGroupEl) {
-            webEl.innerHTML = `<a href="${desire.webUrl}" target="_blank" rel="noopener noreferrer">Webページ</a>`;
-            webGroupEl.style.display = 'block';
-        } else if (webGroupEl) {
-            webGroupEl.style.display = 'none';
-        }
-
-        // パネルを表示
-        displayPanel.classList.remove('hidden');
-    }
-
-    // フォームパネルを非表示
-    if (formPanel) {
-        formPanel.classList.add('hidden');
-    }
-
-    // 追加ボタンをdisabled風に
-    if (addBtn) {
-        addBtn.classList.add('disabled');
     }
 }
 
-// 照会モードを非表示
-function hideDisplayPanel(): void {
-    const displayPanel = document.getElementById('display-panel');
-    const addBtn = document.getElementById('add-btn');
+// SVGエクスポート処理
+async function handleSvgExport(): Promise<void> {
+    const svg = document.getElementById('matrix') as unknown as SVGElement;
+    if (!svg) return;
 
-    if (displayPanel) {
-        displayPanel.classList.add('hidden');
-    }
+    // SVGをクローン
+    const clone = svg.cloneNode(true) as SVGElement;
+    clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
 
-    if (addBtn) {
-        addBtn.classList.remove('disabled');
-    }
-}
+    // 画像を埋め込み
+    await embedImages(clone);
 
-// フォームを非表示
-function hideForm(): void {
-    const formPanel = document.getElementById('form-panel');
-    const addBtn = document.getElementById('add-btn');
-    const form = document.getElementById('desire-form') as HTMLFormElement;
+    // SVGを文字列に変換
+    const svgData = new XMLSerializer().serializeToString(clone);
+    const blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
 
-    if (formPanel) {
-        formPanel.classList.add('hidden');
-    }
-    if (addBtn) {
-        addBtn.classList.remove('disabled');
-    }
-    // フォームをリセット
-    if (form) {
-        form.reset();
-    }
-    editingDesireId = null;
-    updateSubmitButton();
-}
-
-// フォームタイトルを更新
-function updateFormTitle(title: string): void {
-    const titleElement = document.getElementById('form-title');
-    if (titleElement) {
-        titleElement.textContent = title;
-    }
-}
-
-// 送信ボタンのテキストを更新
-function updateSubmitButtonText(text: string): void {
-    const submitBtn = document.querySelector('#desire-form .btn-submit') as HTMLButtonElement;
-    if (submitBtn) {
-        submitBtn.textContent = text;
-    }
-}
-
-// 削除ボタンを表示
-function showDeleteButton(): void {
-    const deleteBtn = document.getElementById('delete-btn');
-    if (deleteBtn) {
-        deleteBtn.style.display = 'block';
-    }
-}
-
-// 削除ボタンを非表示
-function hideDeleteButton(): void {
-    const deleteBtn = document.getElementById('delete-btn');
-    if (deleteBtn) {
-        deleteBtn.style.display = 'none';
-    }
-}
-
-// 削除ボタンクリック時の処理
-async function handleDeleteClick(): Promise<void> {
-    if (editingDesireId && confirm('この物慾を削除しますか？')) {
-        await handleDelete(editingDesireId);
-        hideForm();
-    }
-}
-
-// 追加ボタンの有効/無効を更新
-function updateSubmitButton(): void {
-    const nameInput = document.getElementById('name') as HTMLInputElement;
-    // フォーム内の送信ボタンのみを対象にする
-    const submitBtn = document.querySelector('#desire-form .btn-submit') as HTMLButtonElement;
-    if (nameInput && submitBtn) {
-        submitBtn.disabled = !nameInput.value.trim();
-    }
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'matrix.svg';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 }
 
 // JSONエクスポート処理
@@ -330,31 +134,36 @@ async function init(): Promise<void> {
     renderer = new MatrixRenderer('#matrix');
     refreshMatrix();
 
-    // フォームイベントを設定
-    const form = document.getElementById('desire-form');
-    if (form) {
-        form.addEventListener('submit', handleFormSubmit);
-    }
-
-    // 名前フィールドの入力監視（追加ボタンの有効/無効）
-    const nameInput = document.getElementById('name');
-    if (nameInput) {
-        nameInput.addEventListener('input', updateSubmitButton);
-    }
-
-    // 初期状態で追加ボタンを無効化
-    updateSubmitButton();
+    // フォームを初期化
+    form = new DesireForm(
+        // 送信後コールバック: データ再取得＋再描画
+        async () => {
+            desires = await getDesires();
+            refreshMatrix();
+        },
+        // 削除後コールバック
+        async (id: string) => {
+            await handleDelete(id);
+        }
+    );
+    form.init();
 
     // 追加ボタンのクリックでフォームを表示
     const addBtn = document.getElementById('add-btn');
     if (addBtn) {
-        addBtn.addEventListener('click', showForm);
+        addBtn.addEventListener('click', () => form.show());
     }
 
     // JSON出力ボタンのクリック
     const exportBtn = document.getElementById('export-btn');
     if (exportBtn) {
         exportBtn.addEventListener('click', handleExport);
+    }
+
+    // SVG出力ボタンのクリック
+    const exportSvgBtn = document.getElementById('export-svg-btn');
+    if (exportSvgBtn) {
+        exportSvgBtn.addEventListener('click', handleSvgExport);
     }
 
     // データ初期化ボタンのクリック
@@ -368,44 +177,6 @@ async function init(): Promise<void> {
         });
     }
 
-    // 閉じるボタンのクリックでフォームを非表示
-    const closeBtn = document.getElementById('close-form-btn');
-    if (closeBtn) {
-        closeBtn.addEventListener('click', hideForm);
-    }
-
-    // 削除ボタンのクリック
-    const deleteBtn = document.getElementById('delete-btn');
-    if (deleteBtn) {
-        deleteBtn.addEventListener('click', handleDeleteClick);
-    }
-
-    // 照会モードの「変更」ボタン
-    const editBtn = document.getElementById('edit-btn');
-    if (editBtn) {
-        editBtn.addEventListener('click', () => {
-            if (editingDesireId) {
-                const desire = desires.find(d => d.id === editingDesireId);
-                if (desire) {
-                    showFormWithData(desire);
-                    hideDisplayPanel();
-                }
-            }
-        });
-    }
-
-    // 照会モードの「閉じる」ボタン（×ボタン）
-    const closeDisplayBtn = document.getElementById('close-display-btn');
-    if (closeDisplayBtn) {
-        closeDisplayBtn.addEventListener('click', hideDisplayPanel);
-    }
-
-    // 照会モードの「閉じる」ボタン（下部ボタン）
-    const closeDisplayBtnBottom = document.getElementById('close-display-btn-bottom');
-    if (closeDisplayBtnBottom) {
-        closeDisplayBtnBottom.addEventListener('click', hideDisplayPanel);
-    }
-
     // ウィンドウリサイズ時に再描画
     window.addEventListener('resize', () => {
         refreshMatrix();
@@ -414,3 +185,4 @@ async function init(): Promise<void> {
 
 // DOMContentLoaded時に初期化
 document.addEventListener('DOMContentLoaded', init);
+
