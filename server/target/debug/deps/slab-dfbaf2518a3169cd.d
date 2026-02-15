@@ -1,0 +1,8 @@
+C:\Users\yanqi\prj\Greedy\server\target\debug\deps\slab-dfbaf2518a3169cd.d: C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\slab-0.4.12\src\lib.rs C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\slab-0.4.12\src\builder.rs
+
+C:\Users\yanqi\prj\Greedy\server\target\debug\deps\libslab-dfbaf2518a3169cd.rlib: C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\slab-0.4.12\src\lib.rs C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\slab-0.4.12\src\builder.rs
+
+C:\Users\yanqi\prj\Greedy\server\target\debug\deps\libslab-dfbaf2518a3169cd.rmeta: C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\slab-0.4.12\src\lib.rs C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\slab-0.4.12\src\builder.rs
+
+C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\slab-0.4.12\src\lib.rs:
+C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\slab-0.4.12\src\builder.rs:

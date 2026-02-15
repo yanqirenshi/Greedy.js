@@ -1,0 +1,11 @@
+C:\Users\yanqi\prj\Greedy\server\target\debug\deps\toml_write-e3e7aca7e1fc416a.d: C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\toml_write-0.1.2\src\lib.rs C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\toml_write-0.1.2\src\key.rs C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\toml_write-0.1.2\src\string.rs C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\toml_write-0.1.2\src\value.rs C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\toml_write-0.1.2\src\write.rs
+
+C:\Users\yanqi\prj\Greedy\server\target\debug\deps\libtoml_write-e3e7aca7e1fc416a.rlib: C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\toml_write-0.1.2\src\lib.rs C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\toml_write-0.1.2\src\key.rs C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\toml_write-0.1.2\src\string.rs C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\toml_write-0.1.2\src\value.rs C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\toml_write-0.1.2\src\write.rs
+
+C:\Users\yanqi\prj\Greedy\server\target\debug\deps\libtoml_write-e3e7aca7e1fc416a.rmeta: C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\toml_write-0.1.2\src\lib.rs C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\toml_write-0.1.2\src\key.rs C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\toml_write-0.1.2\src\string.rs C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\toml_write-0.1.2\src\value.rs C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\toml_write-0.1.2\src\write.rs
+
+C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\toml_write-0.1.2\src\lib.rs:
+C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\toml_write-0.1.2\src\key.rs:
+C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\toml_write-0.1.2\src\string.rs:
+C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\toml_write-0.1.2\src\value.rs:
+C:\Users\yanqi\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\toml_write-0.1.2\src\write.rs:

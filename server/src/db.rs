@@ -27,28 +27,27 @@ pub fn create_pool() -> Pool {
         .expect("PostgreSQL 接続プールの作成に失敗しました")
 }
 
-/// マイグレーション: desires テーブルを作成
-pub async fn run_migration(pool: &Pool) {
-    let client = pool.get().await.expect("DB接続の取得に失敗しました");
+mod embedded {
+    use refinery::embed_migrations;
+    embed_migrations!("migrations");
+}
 
-    client
-        .execute(
-            "CREATE TABLE IF NOT EXISTS desires (
-                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-                name VARCHAR(500) NOT NULL,
-                importance VARCHAR(10) NOT NULL CHECK (importance IN ('low', 'high')),
-                urgency VARCHAR(10) NOT NULL CHECK (urgency IN ('low', 'high')),
-                image_url TEXT,
-                web_url TEXT,
-                note TEXT,
-                x DOUBLE PRECISION,
-                y DOUBLE PRECISION,
-                created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-            )",
-            &[],
-        )
+/// マイグレーションを実行
+pub async fn run_migration(pool: &Pool) {
+    let mut client = pool.get().await.expect("DB接続の取得に失敗しました");
+
+    let migration_report = embedded::migrations::runner()
+        .run_async(&mut **client)
         .await
         .expect("マイグレーションに失敗しました");
 
-    println!("マイグレーション完了: desires テーブル");
+    for migration in migration_report.applied_migrations() {
+        println!(
+            "マイグレーション適用: V{}__{}",
+            migration.version(),
+            migration.name()
+        );
+    }
+    
+    println!("マイグレーション完了");
 }
