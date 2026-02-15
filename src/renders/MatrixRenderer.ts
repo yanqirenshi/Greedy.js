@@ -3,6 +3,7 @@ import type { Desire } from '../types';
 import { QUADRANTS } from '../types';
 import { DesireNode } from './DesireNode';
 import type { DeleteCallback, UpdateCallback, ClickCallback } from './DesireNode';
+import { MatrixQuadrant } from './MatrixQuadrant';
 
 // マトリクスのマージン設定
 const MARGIN = { top: 60, right: 40, bottom: 60, left: 80 };
@@ -56,50 +57,11 @@ export class MatrixRenderer {
         QUADRANTS.forEach(q => {
             const x = q.urgency === 'high' ? 0 : this.innerWidth / 2;
             const y = q.importance === 'high' ? 0 : this.innerHeight / 2;
+            const width = this.innerWidth / 2;
+            const height = this.innerHeight / 2;
 
-            // 象限の背景
-            grid.append('rect')
-                .attr('class', `quadrant ${q.id}`)
-                .attr('x', x)
-                .attr('y', y)
-                .attr('width', this.innerWidth / 2)
-                .attr('height', this.innerHeight / 2)
-                .attr('fill', q.color)
-                .attr('fill-opacity', 0.15)
-                .attr('stroke', q.color)
-                .attr('stroke-opacity', 0.3)
-                .attr('stroke-width', 1);
-
-            // 象限ごとのラベル色（背景色より少し濃い色 - さらに薄く、パステル調に）
-            let labelColor = '#999';
-            switch (q.id) {
-                case 'top-left': // すぐ買う #EF5350 -> #E57373
-                    labelColor = '#E57373';
-                    break;
-                case 'top-right': // 計画的に #66BB6A -> #81C784
-                    labelColor = '#81C784';
-                    break;
-                case 'bottom-left': // いつか #FFB74D -> #FFB74D
-                    labelColor = '#FFB74D';
-                    break;
-                case 'bottom-right': // 不要かも #78909C -> #90A4AE
-                    labelColor = '#90A4AE';
-                    break;
-            }
-
-            // 象限のラベル
-            grid.append('text')
-                .attr('class', 'quadrant-label')
-                .attr('x', x + this.innerWidth / 4)
-                .attr('y', y + this.innerHeight / 4)
-                .attr('text-anchor', 'middle')
-                .attr('dominant-baseline', 'central')
-                .attr('fill', labelColor)
-                .attr('font-size', '88px')
-                .attr('font-weight', 'bold')
-                .style('pointer-events', 'none')
-                .style('user-select', 'none')
-                .text(q.label);
+            const quadrant = new MatrixQuadrant(q, x, y, width, height);
+            quadrant.render(grid);
         });
 
         // 軸ラベル
