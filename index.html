@@ -61,6 +61,17 @@
           <div id="display-web" class="display-value-link"></div>
         </div>
 
+        <div class="display-row">
+          <div class="display-group" id="display-occurred-date-group">
+            <label>発生日</label>
+            <div id="display-occurred-date" class="display-value"></div>
+          </div>
+          <div class="display-group" id="display-fulfilled-date-group">
+            <label>成就日</label>
+            <div id="display-fulfilled-date" class="display-value"></div>
+          </div>
+        </div>
+
         <div class="display-group">
           <label>メモ</label>
           <div id="display-note" class="display-value multiline"></div>
@@ -110,6 +121,17 @@
         <div class="form-group">
           <label for="webUrl">WebページURL</label>
           <input type="url" id="webUrl" name="webUrl" placeholder="https://example.com/product" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="occurredDate">発生日</label>
+            <input type="date" id="occurredDate" name="occurredDate" />
+          </div>
+          <div class="form-group">
+            <label for="fulfilledDate">成就日</label>
+            <input type="date" id="fulfilledDate" name="fulfilledDate" />
+          </div>
         </div>
 
         <div class="form-group">

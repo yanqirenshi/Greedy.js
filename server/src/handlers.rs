@@ -52,8 +52,8 @@ pub async fn create_desire(
 
     match client
         .query_one(
-            "INSERT INTO desires (name, importance, urgency, image_url, web_url, note, x, y)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+            "INSERT INTO desires (name, importance, urgency, image_url, web_url, note, x, y, fulfilled_date, occurred_date)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, COALESCE($10, CURRENT_TIMESTAMP))
              RETURNING *",
             &[
                 &body.name,
@@ -64,6 +64,8 @@ pub async fn create_desire(
                 &body.note,
                 &body.x,
                 &body.y,
+                &body.fulfilled_date,
+                &body.occurred_date,
             ],
         )
         .await
@@ -103,8 +105,10 @@ pub async fn update_desire(
                  web_url = COALESCE($5, web_url),
                  note = COALESCE($6, note),
                  x = COALESCE($7, x),
-                 y = COALESCE($8, y)
-             WHERE id = $9
+                 y = COALESCE($8, y),
+                 fulfilled_date = COALESCE($9, fulfilled_date),
+                 occurred_date = COALESCE($10, occurred_date)
+             WHERE id = $11
              RETURNING *",
             &[
                 &body.name,
@@ -115,6 +119,8 @@ pub async fn update_desire(
                 &body.note,
                 &body.x,
                 &body.y,
+                &body.fulfilled_date,
+                &body.occurred_date,
                 &id,
             ],
         )

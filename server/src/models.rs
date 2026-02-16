@@ -21,6 +21,10 @@ pub struct Desire {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub y: Option<f64>,
     pub created_at: DateTime<Utc>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub fulfilled_date: Option<DateTime<Utc>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub occurred_date: Option<DateTime<Utc>>,
 }
 
 /// 新規作成用の入力構造体
@@ -35,6 +39,8 @@ pub struct CreateDesire {
     pub note: Option<String>,
     pub x: Option<f64>,
     pub y: Option<f64>,
+    pub fulfilled_date: Option<DateTime<Utc>>,
+    pub occurred_date: Option<DateTime<Utc>>,
 }
 
 /// 更新用の入力構造体
@@ -49,6 +55,8 @@ pub struct UpdateDesire {
     pub note: Option<String>,
     pub x: Option<f64>,
     pub y: Option<f64>,
+    pub fulfilled_date: Option<DateTime<Utc>>,
+    pub occurred_date: Option<DateTime<Utc>>,
 }
 
 impl Desire {
@@ -65,6 +73,8 @@ impl Desire {
             x: row.get("x"),
             y: row.get("y"),
             created_at: row.get("created_at"),
+            fulfilled_date: row.try_get("fulfilled_date").ok(),
+            occurred_date: row.try_get("occurred_date").ok(),
         }
     }
 }

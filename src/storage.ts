@@ -13,6 +13,8 @@ export async function getDesires(): Promise<Desire[]> {
         return data.map((item: any) => ({
             ...item,
             createdAt: new Date(item.createdAt),
+            fulfilledDate: item.fulfilledDate ? new Date(item.fulfilledDate) : undefined,
+            occurredDate: item.occurredDate ? new Date(item.occurredDate) : new Date(item.createdAt), // 移行措置: 未設定なら作成日
         }));
     } catch (error) {
         console.error('物慾の取得に失敗しました:', error);
@@ -36,6 +38,8 @@ export async function addDesire(desire: Omit<Desire, 'id' | 'createdAt'>): Promi
     return {
         ...data,
         createdAt: new Date(data.createdAt),
+        fulfilledDate: data.fulfilledDate ? new Date(data.fulfilledDate) : undefined,
+        occurredDate: data.occurredDate ? new Date(data.occurredDate) : undefined,
     };
 }
 

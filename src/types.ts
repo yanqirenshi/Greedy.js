@@ -10,6 +10,8 @@ export interface Desire {
     x?: number;              // X座標（0-1の相対値）
     y?: number;              // Y座標（0-1の相対値）
     createdAt: Date;         // 作成日時
+    fulfilledDate?: Date;    // 成就日（任意）
+    occurredDate?: Date;     // 発生日（任意・初期値は作成日）
 }
 
 // マトリクスの象限を表す型

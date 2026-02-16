@@ -69,31 +69,7 @@ export class DesireForm {
         }
     }
 
-    // フォームを新規追加モードで表示（トグル動作）
-    show(): void {
-        const formPanel = document.getElementById('form-panel');
 
-        // フォームが既に開いている場合は閉じる
-        if (formPanel && !formPanel.classList.contains('hidden')) {
-            this.hide();
-            return;
-        }
-
-        this.hideDisplay();
-
-        this.editingDesireId = null;
-        this.updateTitle('物慾を追加');
-        this.updateSubmitText('追加');
-        this.hideDeleteBtn();
-
-        const addBtn = document.getElementById('add-btn');
-        if (formPanel) {
-            formPanel.classList.remove('hidden');
-        }
-        if (addBtn) {
-            addBtn.classList.add('disabled');
-        }
-    }
 
     // フォームを編集モードで表示
     showWithData(desire: Desire): void {
@@ -107,6 +83,8 @@ export class DesireForm {
         const urgencySelect = document.getElementById('urgency') as HTMLSelectElement;
         const imageUrlInput = document.getElementById('imageUrl') as HTMLInputElement;
         const webUrlInput = document.getElementById('webUrl') as HTMLInputElement;
+        const fulfilledDateInput = document.getElementById('fulfilledDate') as HTMLInputElement;
+        const occurredDateInput = document.getElementById('occurredDate') as HTMLInputElement;
         const noteTextarea = document.getElementById('note') as HTMLTextAreaElement;
 
         if (nameInput) nameInput.value = desire.name;
@@ -114,6 +92,33 @@ export class DesireForm {
         if (urgencySelect) urgencySelect.value = desire.urgency;
         if (imageUrlInput) imageUrlInput.value = desire.imageUrl || '';
         if (webUrlInput) webUrlInput.value = desire.webUrl || '';
+
+        // 成就日
+        if (fulfilledDateInput) {
+            if (desire.fulfilledDate) {
+                const d = new Date(desire.fulfilledDate);
+                const year = d.getFullYear();
+                const month = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                fulfilledDateInput.value = `${year}-${month}-${day}`;
+            } else {
+                fulfilledDateInput.value = '';
+            }
+        }
+
+        // 発生日
+        if (occurredDateInput) {
+            if (desire.occurredDate) {
+                const d = new Date(desire.occurredDate);
+                const year = d.getFullYear();
+                const month = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                occurredDateInput.value = `${year}-${month}-${day}`;
+            } else {
+                occurredDateInput.value = '';
+            }
+        }
+
         if (noteTextarea) noteTextarea.value = desire.note || '';
 
         this.updateSubmitState();
@@ -146,6 +151,10 @@ export class DesireForm {
             const imageEl = document.getElementById('display-image');
             const webGroupEl = document.getElementById('display-web-group');
             const webEl = document.getElementById('display-web');
+            const fulfilledDateGroupEl = document.getElementById('display-fulfilled-date-group');
+            const fulfilledDateEl = document.getElementById('display-fulfilled-date');
+            const occurredDateGroupEl = document.getElementById('display-occurred-date-group');
+            const occurredDateEl = document.getElementById('display-occurred-date');
 
             if (nameEl) nameEl.textContent = desire.name;
             if (importanceEl) importanceEl.textContent = desire.importance === 'high' ? '高' : '低';
@@ -168,6 +177,27 @@ export class DesireForm {
                 webGroupEl.style.display = 'none';
             }
 
+            // 成就日表示
+            if (desire.fulfilledDate && fulfilledDateEl && fulfilledDateGroupEl) {
+                const d = new Date(desire.fulfilledDate);
+                fulfilledDateEl.textContent = d.toLocaleDateString();
+                fulfilledDateGroupEl.style.display = 'block';
+            } else if (fulfilledDateGroupEl) {
+                fulfilledDateGroupEl.style.display = 'none';
+            }
+
+            // 発生日表示
+            if (desire.occurredDate && occurredDateEl && occurredDateGroupEl) {
+                const d = new Date(desire.occurredDate);
+                occurredDateEl.textContent = d.toLocaleDateString();
+                occurredDateGroupEl.style.display = 'block';
+            } else if (occurredDateGroupEl) {
+                // 発生日がない場合は作成日を表示する（データ移行前のデータなど）
+                const d = new Date(desire.createdAt);
+                occurredDateEl!.textContent = d.toLocaleDateString() + ' (作成日)';
+                occurredDateGroupEl.style.display = 'block';
+            }
+
             // パネルを表示
             displayPanel.classList.remove('hidden');
         }
@@ -178,6 +208,46 @@ export class DesireForm {
         }
 
         // 追加ボタンをdisabled風に
+        if (addBtn) {
+            addBtn.classList.add('disabled');
+        }
+    }
+
+    // フォームを新規追加モードで表示（トグル動作）
+    show(): void {
+        const formPanel = document.getElementById('form-panel');
+
+        // フォームが既に開いている場合は閉じる
+        if (formPanel && !formPanel.classList.contains('hidden')) {
+            this.hide();
+            return;
+        }
+
+        this.hideDisplay();
+
+        this.editingDesireId = null;
+        this.updateTitle('物慾を追加');
+        this.updateSubmitText('追加');
+        this.hideDeleteBtn();
+
+        // 発生日にデフォルトで今日を入れる
+        const occurredDateInput = document.getElementById('occurredDate') as HTMLInputElement;
+        if (occurredDateInput) {
+            const d = new Date();
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            occurredDateInput.value = `${year}-${month}-${day}`;
+        }
+        const fulfilledDateInput = document.getElementById('fulfilledDate') as HTMLInputElement;
+        if (fulfilledDateInput) {
+            fulfilledDateInput.value = '';
+        }
+
+        const addBtn = document.getElementById('add-btn');
+        if (formPanel) {
+            formPanel.classList.remove('hidden');
+        }
         if (addBtn) {
             addBtn.classList.add('disabled');
         }
@@ -229,12 +299,26 @@ export class DesireForm {
         const urgency = formData.get('urgency') as 'low' | 'high';
         const imageUrl = formData.get('imageUrl') as string;
         const webUrl = formData.get('webUrl') as string;
+        const fulfilledDateStr = formData.get('fulfilledDate') as string;
+        const occurredDateStr = formData.get('occurredDate') as string;
         const note = formData.get('note') as string;
 
         // バリデーション
         if (!name.trim()) {
             alert('名前を入力してください');
             return;
+        }
+
+        // 成就日
+        let fulfilledDate: Date | undefined;
+        if (fulfilledDateStr) {
+            fulfilledDate = new Date(fulfilledDateStr);
+        }
+
+        // 発生日
+        let occurredDate: Date | undefined;
+        if (occurredDateStr) {
+            occurredDate = new Date(occurredDateStr);
         }
 
         if (this.editingDesireId) {
@@ -245,6 +329,8 @@ export class DesireForm {
                 urgency,
                 imageUrl: imageUrl.trim() || undefined,
                 webUrl: webUrl.trim() || undefined,
+                fulfilledDate,
+                occurredDate,
                 note: note.trim() || undefined
             });
         } else {
@@ -255,6 +341,8 @@ export class DesireForm {
                 urgency,
                 imageUrl: imageUrl.trim() || undefined,
                 webUrl: webUrl.trim() || undefined,
+                fulfilledDate,
+                occurredDate,
                 note: note.trim() || undefined
             });
         }
