@@ -111,6 +111,32 @@ body {
   border-radius: 50px;
   z-index: 90;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  align-items: center;
+  /* 追加: 垂直方向中央揃え */
+}
+
+.date-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 8px;
+  padding-left: 12px;
+}
+
+.date-filter-group label {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.date-filter-group input[type="date"] {
+  width: auto;
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .btn-control {

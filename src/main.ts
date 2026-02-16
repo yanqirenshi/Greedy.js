@@ -5,14 +5,44 @@ import { getDesires, deleteDesire, resetDesires } from './storage';
 import type { Desire } from './types';
 
 // アプリケーションの状態
-let desires: Desire[] = [];
+let allDesires: Desire[] = []; // 全データ
+let displayingDesires: Desire[] = []; // 表示用データ
+let currentDisplayDate: Date = new Date(); // 表示基準日
 let renderer: MatrixRenderer;
 let form: DesireForm;
+
+// 日付比較用ユーティリティ（時刻を無視）
+function isSameOrBefore(date1: Date, date2: Date): boolean {
+    const d1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
+    const d2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
+    return d1 <= d2;
+}
+
+// フィルタリング処理
+function filterDesires(): void {
+    displayingDesires = allDesires.filter(desire => {
+        // 発生日 <= タイミング
+        const occurred = desire.occurredDate ? desire.occurredDate : desire.createdAt;
+        if (!isSameOrBefore(occurred, currentDisplayDate)) {
+            return false;
+        }
+
+        // タイミング <= 成就日 (成就日が未設定なら常にOK)
+        if (desire.fulfilledDate) {
+            if (!isSameOrBefore(currentDisplayDate, desire.fulfilledDate)) {
+                return false;
+            }
+        }
+
+        return true;
+    });
+}
 
 // 物慾を削除して再描画
 async function handleDelete(id: string): Promise<void> {
     await deleteDesire(id);
-    desires = await getDesires();
+    allDesires = await getDesires();
+    filterDesires();
     refreshMatrix();
 }
 
@@ -20,7 +50,8 @@ async function handleDelete(id: string): Promise<void> {
 async function handleUpdate(id: string, x: number, y: number): Promise<void> {
     const { updateDesire } = await import('./storage');
     await updateDesire(id, { x, y });
-    desires = await getDesires();
+    allDesires = await getDesires(); // 位置更新後も全データ再取得が安全
+    filterDesires();
 }
 
 // 物慾クリック時の処理（照会モード表示）
@@ -30,7 +61,7 @@ function handleClick(desire: Desire): void {
 
 // マトリクスを再描画
 function refreshMatrix(): void {
-    renderer.refresh(desires, handleDelete, handleUpdate, handleClick);
+    renderer.refresh(displayingDesires, handleDelete, handleUpdate, handleClick);
 }
 
 // SVG内の画像をBase64に変換して埋め込む
@@ -87,7 +118,7 @@ async function handleSvgExport(): Promise<void> {
 
 // JSONエクスポート処理
 async function handleExport(): Promise<void> {
-    const data = JSON.stringify(desires, null, 2);
+    const data = JSON.stringify(allDesires, null, 2);
 
     // モダンブラウザ向け File System Access API (保存先選択ダイアログ)
     if ('showSaveFilePicker' in window) {
@@ -128,7 +159,32 @@ async function handleExport(): Promise<void> {
 // アプリケーション初期化
 async function init(): Promise<void> {
     // 保存済みデータを読み込み
-    desires = await getDesires();
+    allDesires = await getDesires();
+
+    // 表示日付の初期化（今日）
+    const displayDateInput = document.getElementById('display-date') as HTMLInputElement;
+    if (displayDateInput) {
+        const d = new Date();
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        const dateStr = `${year}-${month}-${day}`;
+        displayDateInput.value = dateStr;
+        currentDisplayDate = new Date(dateStr);
+
+        // 日付変更イベント
+        displayDateInput.addEventListener('change', (e) => {
+            const input = e.target as HTMLInputElement;
+            if (input.value) {
+                currentDisplayDate = new Date(input.value);
+                filterDesires();
+                refreshMatrix();
+            }
+        });
+    }
+
+    // 初回フィルタリング
+    filterDesires();
 
     // マトリクスレンダラーを初期化
     renderer = new MatrixRenderer('#matrix');
@@ -138,7 +194,8 @@ async function init(): Promise<void> {
     form = new DesireForm(
         // 送信後コールバック: データ再取得＋再描画
         async () => {
-            desires = await getDesires();
+            allDesires = await getDesires();
+            filterDesires();
             refreshMatrix();
         },
         // 削除後コールバック
